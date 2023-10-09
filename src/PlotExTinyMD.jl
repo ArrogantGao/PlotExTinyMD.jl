@@ -1,6 +1,6 @@
 module PlotExTinyMD
 
-using ExTinyMD, GLMakie, Makie
+using ExTinyMD, GLMakie
 
 export video_trajection, figure_trajection
 
