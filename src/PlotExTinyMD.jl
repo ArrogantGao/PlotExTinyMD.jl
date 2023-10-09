@@ -1,5 +1,9 @@
 module PlotExTinyMD
 
-# Write your package code here.
+using ExTinyMD, GLMakie, Makie
+
+export video_trajection, figure_trajection
+
+include("draw_trajection.jl")
 
 end
