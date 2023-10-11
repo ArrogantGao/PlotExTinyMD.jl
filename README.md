@@ -10,7 +10,9 @@
 
 Install the packaged by
 ```julia
-pkg> add ExTinyMD, PlotExTinyMD
+pkg> add ExTinyMD
+
+pkg> add https://github.com/ArrogantGao/PlotExTinyMD.jl
 ```
 
 Two functions are provided
