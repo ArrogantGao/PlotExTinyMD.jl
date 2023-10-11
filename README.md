@@ -31,7 +31,7 @@ julia> using PlotExTinyMD
 
 julia> filename = "example/example.lammpstrj"
 
-julia> trajectory, box, timestep, num_atoms = load_lammps(filename);
+julia> trajectory, box, timestep, num_atoms = load_lammpstrj(filename);
 
 julia> video_trajection(trajectory, box)
 true
