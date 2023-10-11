@@ -23,6 +23,18 @@ function figure_trajection(trajectory, box, step)
 ```
 is used to generate a figure of result of step `step`.
 
+This package also provide drawer for trajectory file of `LAMMPS`, here is an example
+```julia
+julia> using PlotExTinyMD
+
+julia> filename = "example/example.lammpstrj"
+
+julia> trajectory, box, timestep, num_atoms = load_lammps(filename);
+
+julia> video_trajection(trajectory, box)
+true
+```
+
 ## Example
 
 The script `example/draw.jl` will run a simple MD process and plot the result, run the script by

@@ -17,34 +17,33 @@ function draw_init(trajectory, box::NTuple{6, T}, color, boundary_linewidth, bou
     end
 
     position = Observable(Point3f[(data[3], data[4], data[5]) for data in trajectory[1]])
-    color_array = [color[Int(data[2])] for data in trajectory[1]]
+    color_array =Observable([color[Int(data[2])] for data in trajectory[1]])
     scatter!(ax, position; color=color_array, markersize = markersize, transparency = transparency, markerspace=:data)
 
-    return position, fig
+    return position, color_array, fig
 end
 
-function video_trajection(trajectory, box::NTuple{6, T}; filename::String = "trajectory.mp4", framerate::Int = 24, color::Vector = [:red, :blue, :green], boundary_linewidth=2.0,
-    boundary_color=:black, markersize=0.05, transparency=true, hideaxis = true, save_result::Bool = true) where{T}
+function video_trajection(trajectory, box::NTuple{6, T}; filename::String = "trajectory.mp4", frame_jump::Int = 1, frame_rate::Int = 24, frame_end::Int=length(trajectory), color::Vector = [:red, :blue, :green], boundary_linewidth=2.0, boundary_color=:black, markersize=0.05, transparency=true, hideaxis = true, save_result::Bool = true) where{T}
 
-    position, fig = draw_init(trajectory, box, color, boundary_linewidth, boundary_color, markersize, transparency, hideaxis)
+    position, color_array, fig = draw_init(trajectory, box, color, boundary_linewidth, boundary_color, markersize, transparency, hideaxis)
 
-    step_iter = 1:1:length(trajectory)
+    step_iter = 1:frame_jump:min(frame_end, length(trajectory))
 
     if save_result
         record(fig, filename, step_iter;
-            framerate = framerate) do step
+            framerate = frame_rate) do step
             trajectory_step = trajectory[step]
             position[] = Point3f[(data[3], data[4], data[5]) for data in trajectory_step]
+            color_array[] = [color[Int(data[2])] for data in trajectory_step]
         end
     end
 
     return true
 end
 
-function figure_trajection(trajectory, box::NTuple{6, T}, step::Int; filename::String = "state_$(step).png", color::Vector = [:red, :blue, :green], boundary_linewidth=2.0,
-    boundary_color=:black, markersize=0.05, transparency=true, hideaxis = true, save_result::Bool = true) where{T}
+function figure_trajection(trajectory, box::NTuple{6, T}, step::Int; filename::String = "state_$(step).png", color::Vector = [:red, :blue, :green], boundary_linewidth=2.0, boundary_color=:black, markersize=0.05, transparency=true, hideaxis = true, save_result::Bool = true) where{T}
     
-    position, fig = draw_init(trajectory, box, color, boundary_linewidth, boundary_color, markersize, transparency, hideaxis)
+    position, color_array, fig = draw_init(trajectory, box, color, boundary_linewidth, boundary_color, markersize, transparency, hideaxis)
 
     if save_result
         save(filename, fig)
